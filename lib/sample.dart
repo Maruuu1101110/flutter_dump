@@ -82,7 +82,7 @@ class _AddBottomAppBar2State extends State<AddBottomAppBar2> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          "Column Widget",
+          "Row Widget",
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
