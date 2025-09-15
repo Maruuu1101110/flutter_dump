@@ -91,12 +91,10 @@ class _AddBottomAppBar2State extends State<AddBottomAppBar2> {
         ),
         SizedBox(height: 30),
         Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(width: 100, height: 100, color: Colors.blue),
-            SizedBox(width: 50),
             Container(width: 100, height: 100, color: Colors.blue),
-            SizedBox(width: 50),
             Container(width: 100, height: 100, color: Colors.blue),
           ],
         ),
