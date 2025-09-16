@@ -11,14 +11,31 @@ class _MyScreenState extends State<MyScreen> {
   int _currentIndex = 0;
   String _title = "";
   late final List<Widget> _pages = [
-      Text(
-        "Home Screen",
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-      ),
-    
+    Text(
+      "Home Screen",
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+    ),
     _createPage("Container", _createContainer()),
-    _createPage("Column", _createColumn()),
-    _createPage("Row", _createRow()),
+    _createPage(
+      "Column",
+      Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _createContainer(),
+          SizedBox(height: 10),
+          _createContainer(),
+          SizedBox(height: 10),
+          _createContainer(),
+        ],
+      ),
+    ),
+    _createPage(
+      "Row",
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [_createContainer(), _createContainer(), _createContainer()],
+      ),
+    ),
   ];
 
   Widget _createPage(String title, Widget widget) {
@@ -37,26 +54,6 @@ class _MyScreenState extends State<MyScreen> {
 
   Widget _createContainer() {
     return Container(width: 100, height: 100, color: Colors.blue.shade800);
-  }
-
-  Widget _createColumn() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        _createContainer(),
-        SizedBox(height: 10),
-        _createContainer(),
-        SizedBox(height: 10),
-        _createContainer(),
-      ],
-    );
-  }
-
-  Widget _createRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [_createContainer(), _createContainer(), _createContainer()],
-    );
   }
 
   @override
