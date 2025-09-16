@@ -1,104 +1,61 @@
 import 'package:flutter/material.dart';
 
-class AddBottomAppBar2 extends StatefulWidget {
-  const AddBottomAppBar2({super.key});
+class MyScreen extends StatefulWidget {
+  const MyScreen({super.key});
 
   @override
-  State<AddBottomAppBar2> createState() => _AddBottomAppBar2State();
+  State<MyScreen> createState() => _MyScreenState();
 }
 
-class _AddBottomAppBar2State extends State<AddBottomAppBar2> {
-  int _selectedIndex = 0;
-
-  late final Map<String, Widget> _pagesPair = {
-    "Home": Center(
-      child: Text(
+class _MyScreenState extends State<MyScreen> {
+  int _currentIndex = 0;
+  String _title = "";
+  late final List<Widget> _pages = [
+      Text(
         "Home Screen",
-        style: TextStyle(
-          color: Colors.black,
-          fontWeight: FontWeight.bold,
-          fontSize: 30,
-        ),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
       ),
-    ),
-    "Container": _buildContainer(),
-    "Column": _buildColumn(),
-    "Row": _buildRow(),
-  };
+    
+    _createPage("Container", _createContainer()),
+    _createPage("Column", _createColumn()),
+    _createPage("Row", _createRow()),
+  ];
 
-  _buildBottomItems(IconData icon) {
-    return BottomNavigationBarItem(
-      icon: Icon(icon),
-      label: _pagesPair.keys.elementAt(_selectedIndex),
-    );
-  }
-
-  Widget _buildContainer() {
+  Widget _createPage(String title, Widget widget) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Text(
-          "Container Widget",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-          ),
+          title,
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
         ),
-        SizedBox(height: 30),
-        Container(width: 100, height: 100, color: Colors.blue),
+        SizedBox(height: 20),
+        widget,
       ],
     );
   }
 
-  Widget _buildColumn() {
+  Widget _createContainer() {
+    return Container(width: 100, height: 100, color: Colors.blue.shade800);
+  }
+
+  Widget _createColumn() {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text(
-          "Column Widget",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-          ),
-        ),
-        SizedBox(height: 30),
-        Column(
-          children: [
-            Container(width: 100, height: 100, color: Colors.blue),
-            SizedBox(height: 10),
-            Container(width: 100, height: 100, color: Colors.blue),
-            SizedBox(height: 10),
-            Container(width: 100, height: 100, color: Colors.blue),
-          ],
-        ),
+        _createContainer(),
+        SizedBox(height: 10),
+        _createContainer(),
+        SizedBox(height: 10),
+        _createContainer(),
       ],
     );
   }
 
-  Widget _buildRow() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Text(
-          "Row Widget",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 30,
-          ),
-        ),
-        SizedBox(height: 30),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(width: 100, height: 100, color: Colors.blue),
-            Container(width: 100, height: 100, color: Colors.blue),
-            Container(width: 100, height: 100, color: Colors.blue),
-          ],
-        ),
-      ],
+  Widget _createRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: [_createContainer(), _createContainer(), _createContainer()],
     );
   }
 
@@ -106,46 +63,52 @@ class _AddBottomAppBar2State extends State<AddBottomAppBar2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_pagesPair.keys.elementAt(_selectedIndex)),
-        titleTextStyle: const TextStyle(
-          fontWeight: FontWeight.normal,
-          fontSize: 24,
-        ),
-        leading: Builder(
-          builder: (context) {
-            return IconButton(
-              onPressed: () => Scaffold.of(context).openDrawer(),
-              icon: const Icon(Icons.menu, color: Colors.blueAccent),
-            );
-          },
-        ),
-        actions: <Widget>[
-          const Icon(Icons.settings_rounded),
-          const Icon(Icons.notifications_rounded),
-          const Icon(Icons.person_rounded),
+        title: Text(_title),
+        leading: Icon(Icons.menu_rounded, color: Colors.blue),
+        actions: [
+          Icon(Icons.settings_rounded),
+          Icon(Icons.notifications_rounded),
+          Icon(Icons.person_rounded),
         ],
       ),
-      drawer: Drawer(),
-      body: SafeArea(
-        child: Center(child: _pagesPair.values.elementAt(_selectedIndex)),
-      ),
+      body: Center(child: _pages[_currentIndex]),
       bottomNavigationBar: BottomNavigationBar(
-        unselectedItemColor: Colors.black,
-        enableFeedback: true,
-        showUnselectedLabels: false,
+        unselectedItemColor: Colors.grey,
         selectedItemColor: Colors.blue.shade800,
-        unselectedIconTheme: IconThemeData(color: Colors.grey),
-        currentIndex: _selectedIndex,
+        showUnselectedLabels: false,
+        currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {
-            _selectedIndex = index;
+            _currentIndex = index;
+            switch (_currentIndex) {
+              case 0:
+                _title = "Home";
+              case 1:
+                _title = "Container";
+              case 2:
+                _title = "Column";
+              case 3:
+                _title = "Row";
+            }
           });
         },
         items: [
-          _buildBottomItems(Icons.home),
-          _buildBottomItems(Icons.apps),
-          _buildBottomItems(Icons.view_column_sharp),
-          _buildBottomItems(Icons.table_rows),
+          BottomNavigationBarItem(
+            label: "Home",
+            icon: Icon(Icons.home_rounded),
+          ),
+          BottomNavigationBarItem(
+            label: "Container",
+            icon: Icon(Icons.apps_rounded),
+          ),
+          BottomNavigationBarItem(
+            label: "Column",
+            icon: Icon(Icons.view_column_rounded),
+          ),
+          BottomNavigationBarItem(
+            label: "Row",
+            icon: Icon(Icons.table_rows_rounded),
+          ),
         ],
       ),
     );
