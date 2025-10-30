@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterbasics_52/screens/14_prelim_exam.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -11,6 +12,24 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _unameController = TextEditingController();
   final TextEditingController _passController = TextEditingController();
   bool _showPass = false;
+
+  String user = "User";
+  String pass = "pass";
+
+  void _checkLogin() {
+    if (_unameController.text != user && _passController.text != pass) {
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(const SnackBar(content: Text("Wrong Credentials!")));
+    } else {
+      Navigator.push(
+          context,
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const PrelimExam(),
+          ));
+    }
+  }
 
   Widget _textInput(bool obs, TextEditingController controller, String hintText,
       double textFormWidth, icon) {
@@ -65,7 +84,7 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(
                 width: textFormWidth,
                 child: ElevatedButton(
-                    onPressed: () {}, child: const Text("Sign In")))
+                    onPressed: _checkLogin, child: const Text("Sign In")))
           ],
         )
       ],
@@ -105,7 +124,7 @@ class _LoginFormState extends State<LoginForm> {
             SizedBox(
                 width: textFormWidth,
                 child: ElevatedButton(
-                    onPressed: () {}, child: const Text("Sign In")))
+                    onPressed: _checkLogin, child: const Text("Sign In")))
           ],
         )
       ],
